@@ -2,8 +2,8 @@
 """Download all files with an extension from a webpage"""
 
 
-import requests
 import urllib
+import requests
 from lxml import html
 from configs import NEEDS_CRED, LOGIN_URL, LOGIN_FORM_INDEX, \
     USER_FIELD_NAME, USERNAME, PASS_FIELD_NAME, PASSWORD, LOGOUT_URL, TARGET_URL, MAX_FILES, EXTS
