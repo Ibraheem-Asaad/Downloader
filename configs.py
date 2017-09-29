@@ -1,4 +1,7 @@
 
+"""Credentials and configurations for downloader module"""
+
+
 NEEDS_CRED = False
 LOGIN_URL = ''
 LOGIN_FORM_INDEX = 0
