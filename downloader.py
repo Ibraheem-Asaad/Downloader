@@ -3,9 +3,10 @@
 
 
 import requests
+import urllib
 from lxml import html
-from configs import needs_cred, login_url, login_form_index, user_field_name, username, \ 
-pass_field_name, password, logout_url, target_url, max_files, exts
+from configs import NEEDS_CRED, LOGIN_URL, LOGIN_FORM_INDEX, \
+    USER_FIELD_NAME, USERNAME, PASS_FIELD_NAME, PASSWORD, LOGOUT_URL, TARGET_URL, MAX_FILES, EXTS
 
 
 def login(session):
@@ -19,22 +20,20 @@ def login(session):
     response = session.post(LOGIN_URL, payload)
 
 
+def file_ext(url):
+    """returns the url file extension"""
+    return url.split('.')[-1]
+
+
 def download(session):
     """Download all files in that webpage"""
-    course_url = TARGET_URL + '/' + course_number
-    response = session.get(course_url)
+    response = session.get(TARGET_URL)
     response.raise_for_status()
-    course_html = html.fromstring(response.content)
-    vacancie_list = course_html.find_class('label label-success')
-    vacancies = 0
-    for vacancy in vacancie_list:
-        vacancies = vacancies + int(vacancy.text)
-    print 'Total vacancies in ' + course_number + ': ' + str(vacancies)
-    if vacancies > 0:
-        if BEEP_ON_SUCCESS:
-            print '\a'  # cross-platform beep
-        if STOP_ON_SUCCESS:
-            exit(0)
+    page_html = html.fromstring(response.content)
+    for link in page_html.iterlinks():
+        if link[1] == 'href':
+            if file_ext(link[2]) in EXTS:
+                print link[2]
 
 
 def logout(session):
@@ -44,8 +43,8 @@ def logout(session):
 
 
 SESSION = requests.session()
-if needs_cred:
-	login(SESSION)
+if NEEDS_CRED:
+    login(SESSION)
 download(SESSION)
-if needs_cred:
-	logout(SESSION)
+if NEEDS_CRED:
+    logout(SESSION)

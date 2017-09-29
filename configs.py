@@ -1,13 +1,13 @@
 
-needs_cred = False
-login_url = ''
-login_form_index = 0
-user_field_name = ''
-username = ''
-pass_field_name = ''
-password = ''
-logout_url = ''
+NEEDS_CRED = False
+LOGIN_URL = ''
+LOGIN_FORM_INDEX = 0
+USER_FIELD_NAME = ''
+USERNAME = ''
+PASS_FIELD_NAME = ''
+PASSWORD = ''
+LOGOUT_URL = ''
 
-target_url = ''
-max_files = 100
-exts = {'.pdf', '.doc'}
+TARGET_URL = 'https://moodle.technion.ac.il/'
+MAX_FILES = 100
+EXTS = {'pdf', 'doc', 'txt'}
