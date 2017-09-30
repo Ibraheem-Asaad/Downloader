@@ -15,7 +15,7 @@ Downloads all direct files with a specific extension (file type)
 4) Rename downloaded files - by changing the original or/and adding incremental numbering
 
 
-##### Future Plans:
+#### Future Plans:
 
 Adding support for UTF-8 encoding - file names
 
