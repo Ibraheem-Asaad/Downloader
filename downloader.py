@@ -25,9 +25,9 @@ def login(session):
     response = session.post(LOGIN_URL, payload)
 
 
-def url_enc_non_ascii(b):
+def url_enc_non_ascii(url):
     """iri_to_uri auxiliary function"""
-    return re.sub('[\x80-\xFF]', lambda c: '%%%02x' % ord(c.group(0)), b)
+    return re.sub('[\x80-\xFF]', lambda c: '%%%02x' % ord(c.group(0)), url)
 
 
 def iri_to_uri(iri):
