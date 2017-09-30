@@ -11,8 +11,12 @@ PASS_FIELD_NAME = ''
 PASSWORD = ''
 LOGOUT_URL = ''
 
-TARGET_URL = 'https://webcourse.cs.technion.ac.il/236350/Spring2017/ho_Lectures.html'
-TARGET_FOLDER = 'C:\\Users\\brhoo_000\\Downloads'
+TARGETS_URLS = {
+    'https://webcourse.cs.technion.ac.il/236350/Spring2017/ho_Lectures.html',
+    'https://webcourse.cs.technion.ac.il/236350/Spring2017/ho_Tutorials.html',
+    'https://webcourse.cs.technion.ac.il/236350/Spring2017/ho.html'
+}
+TARGET_FOLDER = 'C:\\Users\\brhoo_000\\Downloads\\Documents'
 MAX_FILES = 100
 EXTS = {'pdf', 'doc', 'docx', 'txt'}
 REQ_CONF = False
@@ -26,9 +30,8 @@ def incr(max):
         yield i
 
 
-def name_mapping(name, num=incr(MAX_FILES)):
-    # this works because, in python default parameters are static - evaluated once
+def name_mapping(name, file_num):
     """Changes each downloaded file name accordingly"""
     # TODO: generalize UTF-8 encoding
-    # manipulate name patterns - use num.next() for incremental numbering:
+    # manipulate name patterns - use file_num for incremental numbering:
     return name.replace('%20', ' ').replace('_', ' ').replace('-', ' ')
