@@ -2,6 +2,8 @@
 """Download all files of a certiain file extension from a webpage"""
 
 
+import re
+import urlparse
 import os
 import urllib
 import requests
@@ -21,6 +23,21 @@ def login(session):
     payload[user_field_name] = USERNAME
     payload[pass_field_name] = PASSWORD
     response = session.post(LOGIN_URL, payload)
+
+
+def url_enc_non_ascii(b):
+    """iri_to_uri auxiliary function"""
+    return re.sub('[\x80-\xFF]', lambda c: '%%%02x' % ord(c.group(0)), b)
+
+
+def iri_to_uri(iri):
+    """Converts an IRI to a URI"""
+    parts = urlparse.urlparse(iri)
+    return urlparse.urlunparse(
+        part.encode('idna') if parti == 1 else url_enc_non_ascii(
+            part.encode('utf-8'))
+        for parti, part in enumerate(parts)
+    )
 
 
 def file_ext(file_name):
@@ -51,11 +68,11 @@ def download(session):
             file_count = file_count + 1
             if file_count > MAX_FILES:
                 break
-            file_name = url_file_name(link_url)
+            # TODO: generalize
+            file_name = url_file_name(link_url).replace('%20', ' ')
             if not REQ_CONF or raw_input('Download ' + file_name + ' ? (y/n)') == 'y':
-                print 'Downloading ' + file_name + '...'
-                print link_url
-                urllib.urlretrieve(link_url, file_name)
+                # print 'Downloading ' + file_name + '...'
+                urllib.urlretrieve(iri_to_uri(link_url), file_name)
 
 
 def logout(session):

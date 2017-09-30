@@ -11,8 +11,10 @@ PASS_FIELD_NAME = ''
 PASSWORD = ''
 LOGOUT_URL = ''
 
-TARGET_URL = 'http://www.oracle.com/technetwork/java/javase/documentation/index.html'
+TARGET_URL = 'http://webcourse.cs.technion.ac.il/236353/Spring2017/ho_Tutorials.html'
+# TARGET_URL = 'http://webcourse.cs.technion.ac.il/236353/Spring2017/ho_Lectures.html'
+# TARGET_URL = 'http://www.oracle.com/technetwork/java/javase/documentation/index.html'
 TARGET_FOLDER = 'C:\\Users\\brhoo_000\\Downloads'
 MAX_FILES = 100
 EXTS = {'pdf', 'doc', 'txt'}
-REQ_CONF = True
+REQ_CONF = False
