@@ -10,7 +10,7 @@ import requests
 from lxml import html
 from configs import REQ_CRED, LOGIN_URL, LOGIN_FORM_INDEX, USER_FIELD_NAME, \
     USERNAME, PASS_FIELD_NAME, PASSWORD, LOGOUT_URL, TARGET_URL, TARGET_FOLDER, \
-    MAX_FILES, EXTS, REQ_CONF
+    MAX_FILES, EXTS, REQ_CONF, name_mapping
 
 
 def login(session):
@@ -68,10 +68,9 @@ def download(session):
             file_count = file_count + 1
             if file_count > MAX_FILES:
                 break
-            # TODO: generalize
-            file_name = url_file_name(link_url).replace('%20', ' ')
+            file_name = name_mapping(url_file_name(link_url))
             if not REQ_CONF or raw_input('Download ' + file_name + ' ? (y/n)') == 'y':
-                # print 'Downloading ' + file_name + '...'
+                print 'Downloading ' + file_name + '...'
                 urllib.urlretrieve(iri_to_uri(link_url), file_name)
 
 

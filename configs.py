@@ -11,10 +11,23 @@ PASS_FIELD_NAME = ''
 PASSWORD = ''
 LOGOUT_URL = ''
 
-TARGET_URL = 'http://webcourse.cs.technion.ac.il/236353/Spring2017/ho_Tutorials.html'
-# TARGET_URL = 'http://webcourse.cs.technion.ac.il/236353/Spring2017/ho_Lectures.html'
-# TARGET_URL = 'http://www.oracle.com/technetwork/java/javase/documentation/index.html'
+TARGET_URL = 'http://webcourse.cs.technion.ac.il/236353/Spring2017/ho_Additional%20Materials.html'
 TARGET_FOLDER = 'C:\\Users\\brhoo_000\\Downloads'
 MAX_FILES = 100
-EXTS = {'pdf', 'doc', 'txt'}
+EXTS = {'pdf', 'doc', 'docx', 'txt'}
 REQ_CONF = False
+
+
+def incr(max):
+    """Incremental number generator"""
+    i = 0
+    while i < max:
+        i = i + 1
+        yield i
+
+
+def name_mapping(name, num=incr(MAX_FILES)):
+    """Changes each downloaded file name accordingly"""
+    # TODO: generalize UTF-8 encoding
+    # manipulate name patterns - use num.next() for incremental numbering:
+    return name.replace('%20', ' ')
