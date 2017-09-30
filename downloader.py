@@ -1,5 +1,5 @@
 
-"""Download all files with an extension from a webpage"""
+"""Download all files of a certiain file extension from a webpage"""
 
 
 import os
