@@ -18,10 +18,10 @@ def login(session):
     """Login to the website"""
     response = session.get(LOGIN_URL)
     response.raise_for_status()
-    login_form = html.fromstring(response.content).forms[login_form_index]
+    login_form = html.fromstring(response.content).forms[LOGIN_FORM_INDEX]
     payload = dict(login_form.fields)
-    payload[user_field_name] = USERNAME
-    payload[pass_field_name] = PASSWORD
+    payload[USER_FIELD_NAME] = USERNAME
+    payload[PASS_FIELD_NAME] = PASSWORD
     response = session.post(LOGIN_URL, payload)
 
 
