@@ -20,6 +20,6 @@ Downloads all direct files with a specific extension (file type)
 
 Adding support for UTF-8 encoding - file names
 
-#### Requirements:
+#### Used libraries:
 
 fnmatch, os, urllib, urlparse, re, requests
