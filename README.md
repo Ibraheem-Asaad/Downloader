@@ -1,7 +1,5 @@
 # Downloader
 
-Automatic webpage files downloader
-
 ## Single webpage file downloader
 
 Downloads all direct files with a specific extension (file type)
