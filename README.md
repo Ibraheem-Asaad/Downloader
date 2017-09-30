@@ -18,3 +18,5 @@ Downloads all direct files with a specific extension (file type)
 ##### Future Plans:
 
 Adding support for UTF-8 encoding - file names
+
+Turn into a multi-webpage file downloader

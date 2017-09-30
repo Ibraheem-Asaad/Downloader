@@ -84,5 +84,6 @@ SESSION = requests.session()
 if REQ_CRED:
     login(SESSION)
 download(SESSION)
+# TODO: iterate over multiple number of pages
 if REQ_CRED:
     logout(SESSION)
