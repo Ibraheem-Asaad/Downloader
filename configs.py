@@ -12,5 +12,6 @@ PASSWORD = ''
 LOGOUT_URL = ''
 
 TARGET_URL = 'https://moodle.technion.ac.il/'
+TARGET_FOLDER = 'C:\\Users\\brhoo_000\\Downloads'
 MAX_FILES = 100
 EXTS = {'pdf', 'doc', 'txt'}
