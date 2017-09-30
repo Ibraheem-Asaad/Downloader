@@ -6,8 +6,8 @@ import os
 import urllib
 import requests
 from lxml import html
-from configs import NEEDS_CRED, LOGIN_URL, LOGIN_FORM_INDEX, USER_FIELD_NAME, \
-    USERNAME, PASS_FIELD_NAME, PASSWORD, LOGOUT_URL, TARGET_URL, TARGET_FOLDER, MAX_FILES, EXTS
+from configs import REQ_CRED, LOGIN_URL, LOGIN_FORM_INDEX, USER_FIELD_NAME, \
+    USERNAME, PASS_FIELD_NAME, PASSWORD, LOGOUT_URL, TARGET_URL, TARGET_FOLDER, MAX_FILES, EXTS, REQ_CONF
 
 
 def login(session):
@@ -35,18 +35,21 @@ def url_file_name(url):
 
 
 def download(session):
-    # TODO: implement MAX_FILES limit
-    # TODO: implement ask for confirmation on each file
     """Download all files in that webpage"""
+    file_count = 0
     os.chdir(TARGET_FOLDER)
     response = session.get(TARGET_URL)
     response.raise_for_status()
     page_html = html.fromstring(response.content)
     for (_, link_type, link_url, _) in page_html.iterlinks():
         if link_type == 'href' and file_ext(link_url) in EXTS:
+            file_count = file_count + 1
+            if file_count > MAX_FILES:
+                break
             file_name = url_file_name(link_url)
-            print 'Downloading ' + file_name + '...'
-            urllib.urlretrieve(link_url, file_name)
+            if not REQ_CONF or raw_input('Download ' + file_name + ' ? (y/n)') == 'y':
+                print 'Downloading ' + file_name + '...'
+                urllib.urlretrieve(link_url, file_name)
 
 
 def logout(session):
@@ -56,8 +59,8 @@ def logout(session):
 
 
 SESSION = requests.session()
-if NEEDS_CRED:
+if REQ_CRED:
     login(SESSION)
 download(SESSION)
-if NEEDS_CRED:
+if REQ_CRED:
     logout(SESSION)
