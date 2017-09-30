@@ -26,6 +26,8 @@ def file_ext(file_name):
     """returns the file extension"""
     return file_name.split('.')[-1]
 
+# TODO: change to rfind func
+
 
 def url_file_name(url):
     """returns the url file name"""
@@ -34,6 +36,7 @@ def url_file_name(url):
 
 def download(session):
     # TODO: implement MAX_FILES limit
+    # TODO: implement ask for confirmation on each file
     """Download all files in that webpage"""
     os.chdir(TARGET_FOLDER)
     response = session.get(TARGET_URL)
