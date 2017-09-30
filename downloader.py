@@ -6,11 +6,12 @@ import re
 import urlparse
 import os
 import urllib
+from fnmatch import fnmatch
 import requests
 from lxml import html
-from configs import REQ_CRED, LOGIN_URL, LOGIN_FORM_INDEX, USER_FIELD_NAME, \
-    USERNAME, PASS_FIELD_NAME, PASSWORD, LOGOUT_URL, TARGETS_URLS, TARGET_FOLDER, \
-    MAX_FILES, EXTS, REQ_CONF, name_mapping, incr
+from configs import REQ_AUTH, LOGIN_URL, LOGIN_FORM_INDEX, USER_FIELD_NAME, \
+    USERNAME, PASS_FIELD_NAME, PASSWORD, LOGOUT_URL, TARGET_URLS, TARGET_FOLDER, \
+    MAX_FILES, EXTS, REQ_CONF, NAME_PATTERN, name_mapping, incr
 
 
 def login(session):
@@ -40,9 +41,9 @@ def iri_to_uri(iri):
     )
 
 
-def file_ext(file_name):
-    """returns the file extension"""
-    return file_name.split('.')[-1]
+def file_name_match(file_name):
+    """returns if the file_name matches requirements (extension and pattern)"""
+    return file_name.split('.')[-1] in EXTS and fnmatch(file_name, NAME_PATTERN)
 
 
 def url_file_name(url):
@@ -55,26 +56,6 @@ def url_base(url):
     return url[:url.rfind('/')]
 
 
-def download(session, target_url, count=incr(MAX_FILES)):
-    # this works because, in python default parameters are static - evaluated once
-    """Download all files in that webpage"""
-    os.chdir(TARGET_FOLDER)
-    response = session.get(target_url)
-    response.raise_for_status()
-    page_html = html.fromstring(response.content)
-    page_html.make_links_absolute(base_url=url_base(target_url))
-    for (_, link_type, link_url, _) in page_html.iterlinks():
-        if link_type == 'href' and file_ext(link_url) in EXTS:
-            file_name = url_file_name(link_url)
-            if not REQ_CONF or raw_input('Download ' + file_name + ' ? (y/n)') == 'y':
-                file_count = count.next()
-                file_name = name_mapping(file_name, file_count)
-                if file_count > MAX_FILES:
-                    break
-                print 'Downloading as ' + file_name + '...'
-                urllib.urlretrieve(iri_to_uri(link_url), file_name)
-
-
 def logout(session):
     """Logout from the website"""
     response = session.get(LOGOUT_URL)
@@ -82,10 +63,27 @@ def logout(session):
 
 
 SESSION = requests.session()
-if REQ_CRED:
+if REQ_AUTH:
     login(SESSION)
-for target_url in TARGETS_URLS:
-    download(SESSION, target_url)
-# TODO: iterate over multiple number of pages
-if REQ_CRED:
+
+os.chdir(TARGET_FOLDER)
+FILE_COUNT = 1
+
+for target_url in TARGET_URLS:
+    response = SESSION.get(target_url)
+    response.raise_for_status()
+    page_html = html.fromstring(response.content)
+    page_html.make_links_absolute(base_url=url_base(target_url))
+    for (_, link_type, link_url, _) in page_html.iterlinks():
+        if link_type == 'href':
+            file_name = url_file_name(link_url)
+            if file_name_match(file_name):
+                print link_url
+                if not REQ_CONF or raw_input('Download ' + file_name + ' ? (y/n)') == 'y':
+                    FILE_COUNT = FILE_COUNT + 1
+                    file_name = name_mapping(file_name, str(FILE_COUNT))
+                    print 'Downloading as ' + file_name + ' ...'
+                    urllib.urlretrieve(iri_to_uri(link_url), file_name)
+
+if REQ_AUTH:
     logout(SESSION)

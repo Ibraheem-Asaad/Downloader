@@ -12,7 +12,9 @@ Downloads all direct files with a specific extension (file type)
 
 3) Limit the number of downloads
 
-4) Rename downloaded files - by changing the original or/and adding incremental numbering
+4) Filter download by file name (regural expression)
+
+5) Rename downloaded files - by changing the original or/and adding incremental numbering
 
 #### Future Plans:
 
