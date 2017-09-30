@@ -11,8 +11,8 @@ PASS_FIELD_NAME = ''
 PASSWORD = ''
 LOGOUT_URL = ''
 
-TARGET_URL = 'https://moodle.technion.ac.il/'
+TARGET_URL = 'http://www.oracle.com/technetwork/java/javase/documentation/index.html'
 TARGET_FOLDER = 'C:\\Users\\brhoo_000\\Downloads'
 MAX_FILES = 100
 EXTS = {'pdf', 'doc', 'txt'}
-REQ_CONF = False
+REQ_CONF = True

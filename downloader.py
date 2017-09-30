@@ -7,7 +7,8 @@ import urllib
 import requests
 from lxml import html
 from configs import REQ_CRED, LOGIN_URL, LOGIN_FORM_INDEX, USER_FIELD_NAME, \
-    USERNAME, PASS_FIELD_NAME, PASSWORD, LOGOUT_URL, TARGET_URL, TARGET_FOLDER, MAX_FILES, EXTS, REQ_CONF
+    USERNAME, PASS_FIELD_NAME, PASSWORD, LOGOUT_URL, TARGET_URL, TARGET_FOLDER, \
+    MAX_FILES, EXTS, REQ_CONF
 
 
 def login(session):
@@ -26,12 +27,15 @@ def file_ext(file_name):
     """returns the file extension"""
     return file_name.split('.')[-1]
 
-# TODO: change to rfind func
-
 
 def url_file_name(url):
-    """returns the url file name"""
-    return url.split('/')[-1]
+    """returns the url's file name"""
+    return url[url.rfind('/') + 1:]
+
+
+def url_base(url):
+    """returns the url's base url"""
+    return url[:url.rfind('/')]
 
 
 def download(session):
@@ -41,6 +45,7 @@ def download(session):
     response = session.get(TARGET_URL)
     response.raise_for_status()
     page_html = html.fromstring(response.content)
+    page_html.make_links_absolute(base_url=url_base(TARGET_URL))
     for (_, link_type, link_url, _) in page_html.iterlinks():
         if link_type == 'href' and file_ext(link_url) in EXTS:
             file_count = file_count + 1
@@ -49,6 +54,7 @@ def download(session):
             file_name = url_file_name(link_url)
             if not REQ_CONF or raw_input('Download ' + file_name + ' ? (y/n)') == 'y':
                 print 'Downloading ' + file_name + '...'
+                print link_url
                 urllib.urlretrieve(link_url, file_name)
 
 
