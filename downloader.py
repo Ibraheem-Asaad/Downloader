@@ -62,28 +62,29 @@ def logout(session):
     response.raise_for_status()
 
 
-SESSION = requests.session()
-if REQ_AUTH:
-    login(SESSION)
+if __name__ == '__main__':
+    SESSION = requests.session()
+    if REQ_AUTH:
+        login(SESSION)
 
-os.chdir(TARGET_FOLDER)
-FILE_COUNT = 1
+    os.chdir(TARGET_FOLDER)
+    FILE_COUNT = 1
 
-for target_url in TARGET_URLS:
-    response = SESSION.get(target_url)
-    response.raise_for_status()
-    page_html = html.fromstring(response.content)
-    page_html.make_links_absolute(base_url=url_base(target_url))
-    for (_, link_type, link_url, _) in page_html.iterlinks():
-        if link_type == 'href':
-            file_name = url_file_name(link_url)
-            if file_name_match(file_name):
-                print link_url
-                if not REQ_CONF or raw_input('Download ' + file_name + ' ? (y/n)') == 'y':
-                    FILE_COUNT = FILE_COUNT + 1
-                    file_name = name_mapping(file_name, str(FILE_COUNT))
-                    print 'Downloading as ' + file_name + ' ...'
-                    urllib.urlretrieve(iri_to_uri(link_url), file_name)
+    for target_url in TARGET_URLS:
+        response = SESSION.get(target_url)
+        response.raise_for_status()
+        page_html = html.fromstring(response.content)
+        page_html.make_links_absolute(base_url=url_base(target_url))
+        for (_, link_type, link_url, _) in page_html.iterlinks():
+            if link_type == 'href':
+                file_name = url_file_name(link_url)
+                if file_name_match(file_name):
+                    print link_url
+                    if not REQ_CONF or raw_input('Download ' + file_name + ' ? (y/n)') == 'y':
+                        FILE_COUNT = FILE_COUNT + 1
+                        file_name = name_mapping(file_name, str(FILE_COUNT))
+                        print 'Downloading as ' + file_name + ' ...'
+                        urllib.urlretrieve(iri_to_uri(link_url), file_name)
 
-if REQ_AUTH:
-    logout(SESSION)
+    if REQ_AUTH:
+        logout(SESSION)
