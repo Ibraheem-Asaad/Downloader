@@ -11,7 +11,7 @@ import requests
 from lxml import html
 from configs import REQ_AUTH, LOGIN_URL, LOGIN_FORM_INDEX, USER_FIELD_NAME, \
     USERNAME, PASS_FIELD_NAME, PASSWORD, LOGOUT_URL, TARGET_URLS, TARGET_FOLDER, \
-    MAX_FILES, EXTS, REQ_CONF, NAME_PATTERN, name_mapping, incr
+    MAX_FILES, EXTS, REQ_CONF, NAME_PATTERN, name_mapping
 
 
 def login(session):

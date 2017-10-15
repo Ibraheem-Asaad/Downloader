@@ -12,25 +12,15 @@ PASSWORD = ''
 LOGOUT_URL = ''
 
 TARGET_URLS = {
-    r'https://webcourse.cs.technion.ac.il/236350/Spring2017/ho_Lectures.html',
-    r'https://webcourse.cs.technion.ac.il/236350/Spring2017/ho_Tutorials.html',
-    r'https://webcourse.cs.technion.ac.il/236350/Spring2017/ho.html'
+    r'https://webcourse.cs.technion.ac.il/236350/Spring2017/ho_Previous%20Exams.html'
 }
 TARGET_FOLDER = r'C:\Users\brhoo_000\Downloads\Documents'
 
 # TODO: fix MAX_FILES limit
 MAX_FILES = 100
 EXTS = {'pdf', 'doc', 'docx', 'txt'}
-NAME_PATTERN = '*CRY*'  # '*' for no restrictions
-REQ_CONF = True
-
-
-def incr(max):
-    """Incremental number generator"""
-    i = 0
-    while i < max:
-        i = i + 1
-        yield i
+NAME_PATTERN = '*'  # '*' for no restrictions
+REQ_CONF = False
 
 
 def name_mapping(name, file_num):
